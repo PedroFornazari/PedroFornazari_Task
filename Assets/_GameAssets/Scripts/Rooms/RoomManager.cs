@@ -9,6 +9,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private GameObject room1;
     [SerializeField] private GameObject roomRain;
     [SerializeField] private GameObject roomHof;
+    private bool currentRoomRain;
 
     private void Awake()
     {
@@ -25,22 +26,34 @@ public class RoomManager : MonoBehaviour
 
     public void OpenRoom1()
     {
+        if (!currentRoomRain)
+            return;
+
+        currentRoomRain = false;
+
         room1.SetActive(true);
         roomRain.SetActive(false);
         roomHof.SetActive(false);
 
         int blueCoins = InventoryManager.Instance.inventoryScore;
 
-        ScoreManager.Instance.AddPoints(blueCoins);
-
         for (int i = 0; i < blueCoins; i++)
         {
             InventoryManager.Instance.RemoveItem(CircleType.Point);
         }
+
+        ScoreManager.Instance.AddPoints(blueCoins);
+        InventoryManager.Instance.inventoryScore = 0;
     }
 
     public void OpenRainRoom()
     {
+        if (currentRoomRain)
+            return;
+
+        currentRoomRain = true;
+
+        Debug.Log("OPEN RAIN ROOM");
         room1.SetActive(false);
         roomRain.SetActive(true);
         roomHof.SetActive(false);

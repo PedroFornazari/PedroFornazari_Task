@@ -18,9 +18,20 @@ public class CircleSpawner : MonoBehaviour
     [Header("Special")]
     [SerializeField] private bool specialCircleActive;
 
-    private void Start()
+    private Coroutine spawnRoutine;
+
+    private void OnEnable()
     {
-        StartCoroutine(SpawnRoutine());
+        spawnRoutine = StartCoroutine(SpawnRoutine());
+    }
+
+    private void OnDisable()
+    {
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
     }
 
     private IEnumerator SpawnRoutine()
@@ -49,6 +60,7 @@ public class CircleSpawner : MonoBehaviour
 
     private void SpawnCircle()
     {
+        Debug.Log("SPAWNANDO CIRCULO");
         int random = Random.Range(0, 20);
 
         GameObject prefab = pointCircle;

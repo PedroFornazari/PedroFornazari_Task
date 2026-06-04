@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     private float verticalVelocity;
     private bool isGrounded = true;
+    private bool changingRoom = false;
     private Keyboard currentKeyboard;
 
     public float CurrentSpeedMultiplier { get; set; } = 1f;
@@ -41,8 +42,9 @@ public class PlayerController : MonoBehaviour
         if(position.x < -Screen.width / 2f + playerRect.rect.width / 2f && horizontal < 0)
         {
             horizontal = 0;
-            if (!isGrounded)
+            if (!isGrounded && !changingRoom)
             {
+                changingRoom = true;
                 RoomManager.Instance.OpenRoom1();
             }
         }
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
             horizontal = 0;
             if (!isGrounded)
             {
+                changingRoom = true;
                 RoomManager.Instance.OpenRainRoom();
             }
         }
@@ -87,6 +90,7 @@ public class PlayerController : MonoBehaviour
                 pos.y = groundY;
                 verticalVelocity = 0;
                 isGrounded = true;
+                changingRoom = false;
             }
 
             playerRect.anchoredPosition = pos;

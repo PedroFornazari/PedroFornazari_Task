@@ -104,12 +104,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RetryGame()
+    {
+        Time.timeScale = 1f;
+
+        ScoreManager.Instance.ResetScore();
+
+        InventoryManager.Instance.items.Clear();
+        InventoryManager.Instance.inventoryScore = 0;
+        FindFirstObjectByType<InventoryUI>()?.Refresh();
+
+        RoomManager.Instance.OpenRoom1();
+
+        UIManager.Instance.HideAllMenus();
+
+        SetState(GameState.Playing);
+    }
+
     public void GameOver()
     {
         SetState(GameState.GameOver);
     }
 
     public void BackToMenu()
+    {
+        Time.timeScale = 1f;
+
+        ScoreManager.Instance.ResetScore();
+
+        InventoryManager.Instance.items.Clear();
+        InventoryManager.Instance.inventoryScore = 0;
+
+        FindFirstObjectByType<InventoryUI>()?.Refresh();
+
+        RoomManager.Instance.OpenRoom1();
+
+        SetState(GameState.MainMenu);
+    }
+
+    public void BackToMenuNoRestart()
     {
         SetState(GameState.MainMenu);
     }
